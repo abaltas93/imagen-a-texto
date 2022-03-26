@@ -1,0 +1,28 @@
+version: "3"
+
+services:
+  web:
+    build:
+      context: .
+      dockerfile: ./web/Dockerfile
+    ports:
+      - "5000:5000"
+    depends_on:
+      - nginx
+
+  nginx:
+    image: nginx:alpine
+    volumes:
+      - ./nginx/default.conf:/etc/nginx/conf.d/default.conf
+    depends_on:
+      - api
+
+  api:
+    build:
+      context: .
+      dockerfile: ./api/Dockerfile
+    volumes:
+      - api-img:/opt/imgs
+
+volumes:
+  api-img:
